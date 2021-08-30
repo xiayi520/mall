@@ -9,7 +9,6 @@
     components: {
 
     }
-
 };
 </script>
 <style scoped>

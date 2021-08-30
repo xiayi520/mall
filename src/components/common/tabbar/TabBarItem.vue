@@ -11,7 +11,6 @@
     <div :style="activeStyle">
       <slot name="item-text"></slot>
     </div>
-    
     <!-- <img src="../../assets/img/tabbar/home.svg" alt="" />
     <div>首页</div> -->
   </div>
@@ -33,6 +32,7 @@ export default {
   },
   computed: {
     isActive() {
+      // console.log('router',this.$route);
       return this.$route.path.indexOf(this.path) !== -1
     },
     activeStyle() {
