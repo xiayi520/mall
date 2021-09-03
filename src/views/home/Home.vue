@@ -78,6 +78,7 @@ export default {
       isShowBackTop: false,
       tabOffsetTop: 0,
       isTabFixed: false, //默认情况不吸顶
+      homeItemImgListener: null,
     }
   },
   computed: {
@@ -93,18 +94,28 @@ export default {
    this.getHomeGoods('new');
    this.getHomeGoods('sell');
   },
+  deactived() {
+    // 取消全局事件监听
+    this.$bus.$off('itemImageLoad',this.homeItemImgListener)
+  },
   mounted() {
     // 1、图片加载完成的事件监听
     // 将refresh函数传入到debounce函数中生成一个新函数
     const refresh = debounce(this.$refs.scroll.refresh,50)
+
+    // 保存监听的事件
+    this.homeItemImgListener = () => {
+        this.$refs.scroll && refresh();
+    }
     // 注意： 如果是要拿$refs，不要在created里面拿
       //  监听goodsListItem中图片加载完成
       // 默认情况下$bus是空的，没有用，可以在main.js中，通过prototype
-    this.$bus.$on('itemImageLoad', () => {
-      // 先判断是否有，有在执行下面操作
-      // this.$refs.scroll && this.$refs.scroll.refresh()
-      this.$refs.scroll && refresh();
-    })
+    // this.$bus.$on('itemImageLoad', () => {
+    //   // 先判断是否有，有在执行下面操作
+    //   // this.$refs.scroll && this.$refs.scroll.refresh()
+    //   this.$refs.scroll && refresh();
+    // })
+    this.$bus.$on('itemImageLoad',this.homeItemImgListener)
     // 注： mounted里面获取到的offsetTop不包括图片在内的高度，此时图片还没有加载完成
     // 2、获取tabControl的offsetTop
     // 所有的组件都有一个属性$el，用于获取组件中的元素的
@@ -129,6 +140,7 @@ export default {
           this.currentType = 'sell';
           break;
       }
+      // 让两个tabControl保持一致
       this.$refs.tabControl1.currentIndex = index;
       this.$refs.tabControl2.currentIndex = index;
     },

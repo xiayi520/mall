@@ -5,6 +5,7 @@ const Home = () => import('../views/home/Home')
 const Category = () => import('../views/category/Category')
 const Profile = () => import('../views/profile/Profile')
 const Shopcart = () => import('../views/shopcart/Shopcart')
+const Detail = () => import('../views/detail/Detail')
 // 1、安装插件
 Vue.use(VueRouter)
 
@@ -29,6 +30,12 @@ const routes = [
   {
     path: '/shopcart',
     component: Shopcart
+  },
+  {
+    // 动态路由传递参数
+    path: '/detail/:iid',
+    // path: '/detail',
+    component: Detail
   }
 ]
 const router = new VueRouter({
